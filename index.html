@@ -5,9 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextGen 📚</title>
     <style>
+        :root{
+            --color: rgb(255, 255, 255);
+            --border: 2px solid rgb(255, 255, 255);
+        }
+        body {
+    background-image: url("cat.jpg");
+    background-size: cover;
+    background-position: center;
+}
+        @media only screen and (max-width: 600px) {
+    body {
+        background-image: url("cat.jpg");
+        background-size: cover;
+        background-position: center;
+    }
+}
         body {
             font-family: Arial, sans-serif;
-            background-color: #d4e6dc;
+            color: var(--color);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -18,7 +34,7 @@
         }
 
         h1 {
-            color: #333;
+            color: var(--color);
             margin-bottom: 20px;
             user-select: none;
             text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
@@ -26,8 +42,8 @@
 
         button {
             background-color: #0fc9cf54;
-            border: none;
-            color: rgb(0, 0, 0);
+            border: var(--border);
+            color: var(--color);
             padding: 10px 20px;
             font-size: 16px;
             border-radius: 5px;
@@ -52,13 +68,13 @@
             margin-top: 20px;
             padding: 15px;
             background-color: transparent;
-            border: 2px solid #000000;
+            border: var(--border);
             border-radius: 8px;
             width: 80%;
             max-width: 500px;
             text-align: center;
             overflow-wrap: break-word;
-            color: #080a05;
+            color: var(--color);
             text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
             box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.2)
 
@@ -215,7 +231,7 @@
         .record{
             display: block;
             position: relative;
-            fill: #000000;
+            fill: var(--color);
             left: -100px;
             top: -30px;
             animation: record 2s ease-in 1s  ;
@@ -229,7 +245,7 @@
             bottom: -10px;
             background: transparent;
             border: none;
-            color: rgb(0, 0, 0);
+            color: var(--color);
             padding: 10px 20px;
             font-size: 16px;
             border-radius: 5px;
@@ -240,13 +256,14 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             animation: option 2s ease-in 1s  ;
             border-radius: 10px;
-            border: 2px solid black;
+            border: var(--border);
     }
         .option:hover, .option:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      color: var(--color);
+      border-color: var(--color);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
       border-radius: 10px; 
-      background: transparent;
+      background: rgba(0, 0, 0, 0.534);
     }
      
 

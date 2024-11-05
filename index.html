@@ -6,17 +6,17 @@
     <title>NextGen 📚</title>
     <style>
         :root{
-            --color: rgb(255, 255, 255);
-            --border: 2px solid rgb(255, 255, 255);
+            --color: rgb(255, 225, 225);
+            --border: 2px solid rgb(255, 242, 242);
         }
         body {
-    background-image: url("cat.jpg");
+    background-image: url("catinrain.jpg");
     background-size: cover;
     background-position: center;
 }
         @media only screen and (max-width: 600px) {
     body {
-        background-image: url("cat.jpg");
+        background-image: url("catinrain.jpg");
         background-size: cover;
         background-position: center;
     }
@@ -52,16 +52,19 @@
             transition: background-color 0.3s ease;
             text-shadow: 10px 5px 5px rgba(0, 0, 0, 0.3);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 2;
         }
 
         button:disabled {
             background-color: #7a7a7ad3;
             cursor: not-allowed;
             box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.5);
+            z-index: 2;
         }
 
         button:hover:not(:disabled) {
             background-color: #0fc9cf54;
+            z-index: 2;
         }
 
         p {
@@ -76,7 +79,8 @@
             overflow-wrap: break-word;
             color: var(--color);
             text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
-            box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.2)
+            box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.2);
+            z-index: 2;
 
         }
         img{
@@ -85,28 +89,34 @@
             height: 100px;
             width: 100px;
             animation: move 2s ease-in 1s;
+            z-index: 2;
             
         }
         .full .space{
         animation: moveAndMerge 2s ease-in 1s  ;
+        z-index: 2;
         }
         .full {
             display:flex; /* Use flexbox for alignment */
             justify-content: center; /* Center the items */
             align-items: center; /* Align items vertically */
+            z-index: 2;
             
         }
         .start{
             animation: start 2s ease-in 1s  ;
             position: relative;
+            z-index: 2;
         }
         .stop{
             animation: stop 2s ease-in 1s  ;
             position: relative;
+            z-index: 2;
         }
         .text{
             animation: text 2s ease-in 1s  ;
             position: relative;
+            z-index: 2;
         }
 
         @keyframes moveAndMerge {
@@ -235,9 +245,11 @@
             left: -100px;
             top: -30px;
             animation: record 2s ease-in 1s  ;
+            z-index: 2;
         }
         .anime{
             fill: #ff0606;
+            z-index: 2;
         }
         .option {
             position: relative;
@@ -257,6 +269,7 @@
             animation: option 2s ease-in 1s  ;
             border-radius: 10px;
             border: var(--border);
+            z-index: 2;
     }
         .option:hover, .option:focus {
       color: var(--color);
@@ -264,9 +277,13 @@
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
       border-radius: 10px; 
       background: rgba(0, 0, 0, 0.534);
+      z-index: 2;
     }
-     
-
+    canvas {
+        position: absolute;
+            display: block;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
@@ -276,12 +293,19 @@
     <button class="start" id="start" onclick="startRecognition()">start speech</button>
     <button class="stop" disabled id="stop" onclick="stopRecognition()">stop speech</button>
     <p id="transcript" class="text"></p>
+
+    <canvas id="rainCanvas"></canvas>
+
     <select id="languageSelector" class="option">
         <option value="en-US" >English 📰</option>
         <option value="ru-RU" >Russian 🍸</option>
-      </select>
+    </select>
+
+      
+
     <svg class="record" id="record" height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
     viewBox="0 0 341.981 341.981" xml:space="preserve">
+    
 <g>
    <g>
        <path d="M170.991,260.395c40.113,0,72.747-32.634,72.747-72.747v-114.9C243.738,32.634,211.104,0,170.991,0
@@ -365,6 +389,69 @@
 
     // Initialize on page load
     window.onload = initializeRecognition;
+    
+
+
+
+      // Get the canvas element and its context
+    const canvas = document.getElementById('rainCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size to fill the entire screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Raindrop properties
+    const raindrops = [];
+    const numRaindrops = 1500; // Increased number of raindrops
+
+    // Raindrop constructor function
+    function Raindrop() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.length = Math.random() * 25 + 20; // Longer raindrops
+        this.speed = Math.random() * 6 + 3; // Faster falling
+        this.opacity = Math.random() * 0.4 + 0.3; // Slightly higher opacity
+    }
+
+    // Create raindrop instances
+    for (let i = 0; i < numRaindrops; i++) {
+        raindrops.push(new Raindrop());
+    }
+
+    // Draw the raindrops
+    function drawRain() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+        ctx.strokeStyle = 'rgba(174, 194, 224, 0.7)'; // Slightly brighter rain color
+        ctx.lineWidth = 3; // Increased line width for more visible raindrops
+
+        // Loop through each raindrop and draw it
+        raindrops.forEach(drop => {
+            ctx.beginPath();
+            ctx.moveTo(drop.x, drop.y);
+            ctx.lineTo(drop.x, drop.y + drop.length);
+            ctx.stroke();
+
+            // Update the position of the raindrop
+            drop.y += drop.speed;
+
+            // Reset raindrop to top if it goes off screen
+            if (drop.y > canvas.height) {
+                drop.y = -drop.length;
+                drop.x = Math.random() * canvas.width;
+            }
+        });
+    }
+
+    // Animate the rain
+    function animate() {
+        drawRain();
+        requestAnimationFrame(animate); // Keep animating
+    }
+
+    // Start the animation
+    animate();
     </script>
 </body>
 </html>

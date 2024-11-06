@@ -391,67 +391,6 @@
     window.onload = initializeRecognition;
     
 
-
-
-       // Get the canvas element and its context
-    const canvas = document.getElementById('rainCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // Set canvas size to fill the entire screen
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Raindrop properties
-    const raindrops = [];
-    const numRaindrops = 30; // Fewer raindrops for lighter rain
-
-    // Raindrop constructor function
-    function Raindrop() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.length = Math.random() * 25 + 20; // Longer raindrops
-        this.speed = Math.random() * 6 + 3; // Faster falling
-        this.opacity = Math.random() * 0.4 + 0.3; // Slightly higher opacity
-    }
-
-    // Create raindrop instances
-    for (let i = 0; i < numRaindrops; i++) {
-        raindrops.push(new Raindrop());
-    }
-
-    // Draw the raindrops
-    function drawRain() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-
-        ctx.strokeStyle = 'rgba(174, 194, 224, 0.7)'; // Slightly brighter rain color
-        ctx.lineWidth = 3; // Increased line width for more visible raindrops
-
-        // Loop through each raindrop and draw it
-        raindrops.forEach(drop => {
-            ctx.beginPath();
-            ctx.moveTo(drop.x, drop.y);
-            ctx.lineTo(drop.x, drop.y + drop.length);
-            ctx.stroke();
-
-            // Update the position of the raindrop
-            drop.y += drop.speed;
-
-            // Reset raindrop to top if it goes off screen
-            if (drop.y > canvas.height) {
-                drop.y = -drop.length;
-                drop.x = Math.random() * canvas.width;
-            }
-        });
-    }
-
-    // Animate the rain
-    function animate() {
-        drawRain();
-        requestAnimationFrame(animate); // Keep animating
-    }
-
-    // Start the animation
-    animate();
     </script>
 </body>
 </html>

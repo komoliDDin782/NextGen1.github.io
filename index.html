@@ -6,9 +6,9 @@
     <title>NextGen 📚</title>
     <style>
         :root {
-            --border: 2px solid white;
-            --text-color: #ffffff;
-        }
+    --border: 2px solid white;
+    --text-color: #ffffff;
+             }
         body {
             font-family: Arial, sans-serif;
             background-image: url("cat.jpg");
@@ -23,11 +23,14 @@
             margin: 0;
             user-select: none;
         }
+
         h1 {
             color: var(--text-color);
             margin-bottom: 20px;
+            user-select: none;
             text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
         }
+
         button {
             background-color: #0fc9cf54;
             border: none;
@@ -41,80 +44,97 @@
             text-shadow: 10px 5px 5px rgba(0, 0, 0, 0.3);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
+
         button:disabled {
             background-color: #7a7a7ad3;
             cursor: not-allowed;
+            box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.5);
         }
+
+        button:hover:not(:disabled) {
+            background-color: #0fc9cf54;
+        }
+
         p {
             margin-top: 20px;
             padding: 15px;
+            background-color: transparent;
             border: var(--border);
             border-radius: 8px;
             width: 80%;
             max-width: 500px;
             text-align: center;
+            overflow-wrap: break-word;
             color: var(--text-color);
             text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.2)
         }
     </style>
 </head>
 <body>
-    <h1>NextGen Speech Recognition</h1>
-    <button id="start" onclick="startRecognition()">Start Speech</button>
-    <button id="stop" disabled onclick="stopRecognition()">Stop Speech</button>
-    <p id="transcript"></p>
-    <select id="languageSelector">
-        <option value="en-US">English 📰</option>
-        <option value="ru-RU">Russian 🍸</option>
+    <img src="education.png">
+    <div class="full"><h1>Next</h1><div class="space"></div><h1>Gen</h1></div>
+    
+    <button class="start" id="start" onclick="startRecognition()">start speech</button>
+    <button class="stop" disabled id="stop" onclick="stopRecognition()">stop speech</button>
+    <p id="transcript" class="text"></p>
+    <select id="languageSelector" class="option">
+        <option value="en-US" >English 📰</option>
+        <option value="ru-RU" >Russian 🍸</option>
     </select>
+    
     <script>
-        let recognition;
-        let isRecognizing = false;
-        const transcriptElem = document.getElementById("transcript");
-        const startButton = document.getElementById("start");
-        const stopButton = document.getElementById("stop");
+    let recognition;
+    let isRecognizing = false;
+    const startButton = document.getElementById('start');
+    const stopButton = document.getElementById('stop');
+    const transcriptElement = document.getElementById("transcript");
 
-        function initializeRecognition() {
-            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.continuous = true;
-            recognition.interimResults = true;
+    function initializeRecognition() {
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.continuous = true;
+      recognition.interimResults = true;
 
-            recognition.onresult = (event) => {
-                let newText = "";
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    if (event.results[i].isFinal) {
-                        newText += event.results[i][0].transcript + " ";
-                    }
-                }
-                if (newText) {
-                    transcriptElem.textContent += newText;
-                }
-            };
-            recognition.onend = () => {
-                if (isRecognizing) {
-                    recognition.start();
-                }
-            };
+      recognition.onresult = (event) => {
+        let interimTranscript = '';
+        let finalTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+          } else {
+            interimTranscript += event.results[i][0].transcript;
+          }
         }
-        function startRecognition() {
-            if (isRecognizing) return;
-            transcriptElem.textContent = "";
-            const selectedLang = document.getElementById("languageSelector").value;
-            recognition.lang = selectedLang;
-            recognition.start();
-            isRecognizing = true;
-            startButton.disabled = true;
-            stopButton.disabled = false;
-        }
-        function stopRecognition() {
-            if (isRecognizing) {
-                recognition.stop();
-                isRecognizing = false;
-                startButton.disabled = false;
-                stopButton.disabled = true;
-            }
-        }
-        window.onload = initializeRecognition;
+        transcriptElement.textContent += (finalTranscript || interimTranscript) + ' ';
+      };
+
+      recognition.onend = () => {
+        isRecognizing = false;
+      };
+    }
+
+    function startRecognition() {
+      if (isRecognizing) return;
+      transcriptElement.textContent = ''; // Reset transcript when starting
+      const selectedLang = document.getElementById("languageSelector").value;
+      recognition.lang = selectedLang;
+      recognition.start();
+      isRecognizing = true;
+      startButton.disabled = true;
+      stopButton.disabled = false;
+    }
+
+    function stopRecognition() {
+      if (isRecognizing) {
+        recognition.stop();
+        isRecognizing = false;
+        startButton.disabled = false;
+        stopButton.disabled = true;
+      }
+    }
+
+    window.onload = initializeRecognition;
     </script>
 </body>
 </html>
